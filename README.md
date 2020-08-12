@@ -13,3 +13,11 @@ This takes the "trx" from Ctrax and a matrix of eggs (each column is filled with
 
 
 See streamlined_analysis.m" for random snippetts of code that can give you an idea of the plots you can generate after creating the "egg" and "trx" data structure.
+
+Note that there are many different versions of "assemble_data_global". These different versions are calculating parameters slightly differently. I have not properly documented them. Stick to the original function unless you figure out what is different with the other versions.
+
+Note that "make_rate" has another version "make_rate2"
+
+"make_rate2" specificallt looks at rates on 200 or 500 mM sucrose since the last visit to 0mM. Rates on 0mM are computed as in the old function. 
+
+The "egg_annotator_gui" is a GUI to help annotate eggs in movies. For details see Nuclino. Tracking Flies -> Identyfying egg laying events -> Annotation GUI.
