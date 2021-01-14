@@ -70,12 +70,12 @@ if((eggs.explore_trans_sub(egg_num)-rem) > 0)
             if(trx(1,eggs.fly(egg_num)).sucrose(tran_list(j)-1) == 5)
                 trans_dur_500 = [trans_dur_500, trans_dur(j)];
             end
-            
-            if(trx(1,eggs.fly(egg_num)).sucrose(tran_list(j)-1) == 5 && lastsubstrate(trx, eggs.fly(egg_num),tran_list(j)-1) == 0)
+       
+            if((trx(1,eggs.fly(egg_num)).sucrose(tran_list(j)-1) == 5) && (lastsubstrate(trx, eggs.fly(egg_num),tran_list(j)-1) == 0))
                 trans_dur_500_from0 = [trans_dur_500_from0, trans_dur(j)];
             end
             
-            if(trx(1,eggs.fly(egg_num)).sucrose(tran_list(j)-1) == 5 && lastsubstrate(trx, eggs.fly(egg_num),tran_list(j)-1) == 2)
+            if((trx(1,eggs.fly(egg_num)).sucrose(tran_list(j)-1) == 5) && (lastsubstrate(trx, eggs.fly(egg_num),tran_list(j)-1) == 2))
                 trans_dur_500_from200 = [trans_dur_500_from200, trans_dur(j)];
             end
             

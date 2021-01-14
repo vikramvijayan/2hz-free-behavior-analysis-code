@@ -55,7 +55,7 @@ xlabel('Total eggs per fly'); ylabel('Normalized Counts');
 
 %% Histograms of inter-egg intervals for all eggs
 figure; hold on; box on; grid on;
-title(title_string); xlabel('Time between egg-laying events (minutes)'); ylabel('Normalized Counts');
+title(title_string); xlabel('Time between egg-laying events (minutes)'); ylabel('pdf');
 set(gca,'xlim',[0 60]); set(gca,'xtick',[0:2:60]);
 
 inter_egg = [];
@@ -71,6 +71,84 @@ text(40,.02,['median = ' num2str(median(inter_egg))],'Fontsize',8);
 text(40,.03,['mean = ' num2str(mean(inter_egg))],'Fontsize',8);
 text(40,.04,['minimum = ' num2str(min(inter_egg))],'Fontsize',8);
 text(40,.05,['std = ' num2str(std(inter_egg))],'Fontsize',8);
+
+%% Histograms of position in all time
+
+s = [];
+p = [];
+
+for i =1:1:length(trx)
+    [a b] = find(trx(1,i).sucrose == 0);
+    p(i) = length(a)./length(trx(1,i).sucrose);
+end
+
+
+%% Histograms of inter-substrate intervals
+% only works for 0 and 200 mM chambers
+
+on0 = [];
+on2 = [];
+for i = 1:1:length(trx)
+    
+    
+    tmp_diff = diff(trx(1,i).on0);
+    [a b] = find(tmp_diff);
+    c = diff([1,b]);
+    if(trx(1,i).on0(1) == 1)
+        on0 = [on0 c(1:2:end)./2];
+        on2 = [on2 c(2:2:end)./2];
+    else
+        on2 = [on2 c(1:2:end)./2];
+        on0 = [on0 c(2:2:end)./2];
+    end
+    
+end
+figure; hold on; box on; grid on;
+title(title_string); xlabel('Time on substrates (s)'); ylabel('pdf');
+set(gca,'xlim',[0 60]); set(gca,'xtick',[0:2:60]);
+
+histogram(on0, [0:.5:3600*5],'facecolor','r','Facealpha',.5,'Normalization','probability');
+histogram(on2, [0:.5:3600*5],'facecolor','g','Facealpha',.5,'Normalization','probability');
+
+
+%% Histograms of inter-substrate intervals right before egg layingn on 0
+% only works for 0 and 200 mM chambers
+
+
+%[a b] = find(eggs.substrate == 0);
+time = (eggs.egg_time-eggs.etrans_time(:,1))./2;
+time2 = (eggs.estart_trans_time(:,1)-eggs.estart_trans_time(:,2))./2;
+
+on2 = [];
+
+%[a b] =  find(time <=10 & eggs.substrate == 0);
+[a b] =  find(time <=15 & eggs.substrate == 0);
+on2_15 = time2(a);
+
+%% Fraction of last hour spend on 200 mM intervals right before egg layingn on 0
+% only works for 0 and 200 mM chambers
+
+
+%[a b] = find(eggs.substrate == 0);
+time = (eggs.egg_time-eggs.etrans_time(:,1))./2;
+time2 = [];
+
+for i = 1:1:length(eggs.fly)
+    if (eggs.egg_time(i) < 7201)
+    [a b] = find(trx(1,eggs.fly(i)).sucrose(1:eggs.egg_time(i)) ==2);
+        time2(i) = length(a)./eggs.egg_time(i);
+
+    else
+        [a b] = find(trx(1,eggs.fly(i)).sucrose((eggs.egg_time(i)-7200):eggs.egg_time(i)) ==2);
+    time2(i) = length(a)./7200;
+    end
+end
+[a b] =  find(time <=10 & eggs.substrate == 0);
+%[a b] =  find(time <=15 & eggs.substrate == 0);
+on2 = time2(a);
+
+
+
 %% Histograms of transition to egg time for all eggs
 figure; hold on; box on; grid on;
 title(title_string); xlabel('Time from last actual substrate transition to egg-laying event (seconds)');
@@ -100,8 +178,10 @@ histogram(eggs.etrans_dist_sub(a,1),[0:2:240],'Facecolor','g','Facealpha',.5);
 histogram(eggs.etrans_dist_sub(a,1),[0:2:240],'Facecolor','b','Facealpha',.5);
 
 %% Histograms of residence times (transition periods in exploration that did not lead to egg-laying)
-% This is the newer code that looks at all the inter transition times, but
-% will not include exploration start to transition or transition to egg
+% This is the newer code that looks at all the inter transition times
+
+% i think this will include exploration start to transition because the
+% parameter 0 is passed to alltransinexplore
 s0_time = [];
 s200_time = [];
 s500_time = [];
@@ -161,8 +241,11 @@ if(~isempty(s500_time))
 end
 
 %% Histograms of residence times (transition periods in exploration including that which led to egg laying)
-% This is the newer code that looks at all the inter transition times, but
-% will not include exploration start to transition
+% This is the newer code that looks at all the inter transition times
+
+% i think this will include exploration start to transition because the
+% parameter 0 is passed to alltransinexplore
+
 s0_time = [];
 s200_time = [];
 s500_time = [];
@@ -1680,7 +1763,7 @@ xlabel('Hour in chamber');
 %(eliminate boundary condition eggs)
 
 [a , ~] =find(eggs.explore_trans_sub >= 0);
-window = 480; % window on each side in frames
+window = 600; % window on each side in frames
 c = [];
 for i = 1:1:length(a)
     if(eggs.egg_time(a(i)) > (window+1) && (eggs.egg_time(a(i))+window) <= length(trx(1,eggs.fly(a(i))).x))
@@ -1744,8 +1827,13 @@ xlabel('Time with respect to egg-laying event (seconds)'); ylabel({'Mean speed (
 %% Plot of speed around an egg laying event ordered by exploration duration
 % (eliminate boundary condition eggs)
 
+
+% time = (eggs.egg_time-eggs.etrans_time(:,1))./2;
+% [a b] =  find(time <=10 & eggs.substrate == 0);
+
+
 [a , ~] =find(eggs.explore_trans_sub >= 0);
-window = 480; % window on each side in frames
+window = 600; % window on each side in frames
 c = [];
 for i = 1:1:length(a)
     if(eggs.egg_time(a(i)) > (window+1) && (eggs.egg_time(a(i))+window) <= length(trx(1,eggs.fly(a(i))).x))

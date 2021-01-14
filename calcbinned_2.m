@@ -88,6 +88,7 @@ end
 [a4X0 , ~] = histcounts(tmp_500_0_0T,v);
 [a5X0 , ~] = histcounts(tmp_500_200_0T,v);
 
+
 a1Xc = [];
 a2Xc = [];
 a3Xc = [];
@@ -95,11 +96,14 @@ a4Xc = [];
 a5Xc = [];
 
 for i = 1:1:length(a1X)
-    a1Xc(i) = sum(a1X(i:1:end)) - sum(a1X0(i:1:end));
-    a2Xc(i) = sum(a2X(i:1:end)) - sum(a2X0(i:1:end));
-    a3Xc(i) = sum(a3X(i:1:end)) - sum(a3X0(i:1:end));
-    a4Xc(i) = sum(a4X(i:1:end)) - sum(a4X0(i:1:end));
-    a5Xc(i) = sum(a5X(i:1:end)) - sum(a5X0(i:1:end));
+    % changed 01/5/2021
+
+    %a1Xc(i) = sum(a1X(i:1:end)) - sum(a1X0(i:1:end));
+    a1Xc(i) = sum(a1X(i:1:end));
+    a2Xc(i) = sum(a2X(i:1:end)) - sum(a2X0(i:1:end)) + a2X0(i);
+    a3Xc(i) = sum(a3X(i:1:end)) - sum(a3X0(i:1:end)) + a3X0(i);
+    a4Xc(i) = sum(a4X(i:1:end)) - sum(a4X0(i:1:end)) + a4X0(i);
+    a5Xc(i) = sum(a5X(i:1:end)) - sum(a5X0(i:1:end)) + a5X0(i);
 end
 
 a1Xc2 = zeros(1,length(a1Xc));
@@ -132,8 +136,8 @@ for i = 1:1:eggs.total
         tmp_ns2 = [(eggs.explore_start_time(i)-eggs.estart_trans_time_sub(i,1))./2];
      
         
-        [q1 , ~] = histcounts(tmp_ns+tmp_0_index,v);
-        [q3 , ~] = histcounts(tmp_ns2+tmp_0_index,v);
+        [q1 , ~] = histcounts(tmp_ns,v);
+        [q3 , ~] = histcounts(tmp_ns2,v);
         [~, q6] = find(q1 == 1);
         [~, q8] = find(q3 == 1);
         
@@ -294,13 +298,16 @@ for i = 1:1:length(a1)
     mean_ratio = a1(i)./a1Xc(i);
     if(isnan(mean_ratio))
         pci = NaN(1,2);
+                %disp 'there are nans in error bar for 0'
     end
     eb0(i,:) = [mean_ratio, pci(1), pci(2), a1Xc(i), a1(i)];
-    
+        %eb0(i,:) = [0,0,0,0,0];
+
     [~,pci] = binofit(a2(i),a2Xc(i),.05);
     mean_ratio = a2(i)./a2Xc(i);
     if(isnan(mean_ratio))
         pci = NaN(1,2);
+        %disp 'there are nans in error bar for 200'
     end
     eb2(i,:) = [mean_ratio, pci(1), pci(2), a2Xc(i), a2(i)];
     
@@ -308,22 +315,25 @@ for i = 1:1:length(a1)
     mean_ratio = a3(i)./a3Xc(i);
     if(isnan(mean_ratio))
         pci = NaN(1,2);
+                %disp 'there are nans in error bar for 500'
+
     end
     eb5(i,:) = [mean_ratio, pci(1), pci(2), a3Xc(i), a3(i)];
+   % eb5(i,:) = [0,0,0,0,0];
+%     [~,pci] = binofit(a4(i),a4Xc(i),.05);
+%     mean_ratio = a4(i)./a4Xc(i);
+%     if(isnan(mean_ratio))
+%         pci = NaN(1,2);
+%     end
+%    eb5f0(i,:) = [mean_ratio,pci(1), pci(2), a4Xc(i), a4(i)];
+    eb5f0(i,:) = [0,0,0,0,0];
     
-    [~,pci] = binofit(a4(i),a4Xc(i),.05);
-    mean_ratio = a4(i)./a4Xc(i);
-    if(isnan(mean_ratio))
-        pci = NaN(1,2);
-    end
-    eb5f0(i,:) = [mean_ratio,pci(1), pci(2), a4Xc(i), a4(i)];
-    
-    [~,pci] = binofit(a5(i),a5Xc(i),.05);
-    mean_ratio = a5(i)./a5Xc(i);
-    if(isnan(mean_ratio))
-        pci = NaN(1,2);
-    end
-    eb5f2(i,:) = [mean_ratio,pci(1), pci(2), a5Xc(i), a5(i)];
-end
+%     [~,pci] = binofit(a5(i),a5Xc(i),.05);
+%     mean_ratio = a5(i)./a5Xc(i);
+%     if(isnan(mean_ratio))
+%         pci = NaN(1,2);
+%     end
+%     eb5f2(i,:) = [mean_ratio,pci(1), pci(2), a5Xc(i), a5(i)];
+    eb5f2(i,:) = [0,0,0,0,0];
 
 end

@@ -5,6 +5,8 @@ function [lastsub] = lastsubstrate(trx, fly, time)
 
     if(isempty(b1))
         a1 = 1;
+        b1 = time;
+
     end
     
     lastsub = trx(1,fly).sucrose(b1);

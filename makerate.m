@@ -1,3 +1,6 @@
+%% sample call
+%[bincenters, rate0, rate200, rate500, eb0, eb2, eb5] =   makerate(eggs, trx, title_string, [0:5:30, 45, 60, 90, 120, 240, 360, 600, 1200, 7200], 'eggtime', 0, 1,0,length([0:5:30, 45, 60, 90, 120, 240, 360, 600, 1200, 7200])-1);
+
 
 % Chance of laying an egg in bin versus total occurances of the same bin
 % during exploration
@@ -7,6 +10,7 @@
 % plotasgraph is the number of plots to plot as graph (the rest are plotted
 % as points with errorbar)
 function [bincenters, rate0, rate200, rate500, eb0, eb2, eb5] =  makerate(egg, trx, title_string, binning, gate, gate_num, greater, single_choice, plotasgraph)
+
 
 % v must be of uniform spacing, this is the underlying sampling of the data
 % before any binning is applied
@@ -102,6 +106,8 @@ if(any(eggs.all_substrates == 2))
     set(h,'facealpha',.4);
     %errorbar((2.*rand(1,1)-1)+binning(plotasgraph+1) + 2.5+5.* (0:1:(length(vx)-plotasgraph-1)), eb2B((1+plotasgraph):1:length(vx),1),  eb2B((1+plotasgraph):1:length(vx),1)-eb2B((1+plotasgraph):1:length(vx),2), eb2B((1+plotasgraph):1:length(vx),3)- eb2B((1+plotasgraph):1:length(vx),1),'og','Linewidth',1,'MarkerSize',4,'MarkerFaceColor','g');
     errorbar((0)+binning(plotasgraph+1) + 2.5+5.* (0:1:(length(vx)-plotasgraph-1)), eb2B((1+plotasgraph):1:length(vx),1),  eb2B((1+plotasgraph):1:length(vx),1)-eb2B((1+plotasgraph):1:length(vx),2), eb2B((1+plotasgraph):1:length(vx),3)- eb2B((1+plotasgraph):1:length(vx),1),'og','Linewidth',1,'MarkerSize',4,'MarkerFaceColor',[33,113,181]./255);
+
+
 end
 
 if(any(eggs.all_substrates == 5))

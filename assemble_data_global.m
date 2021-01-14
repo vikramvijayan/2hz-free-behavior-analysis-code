@@ -171,6 +171,14 @@ end
 if(rows_s == 2 && strcmp(chamber_type,'standard'))
     for i=1:y
         
+        % this is code that inverts the x and y and allows anaysis with a
+        % fake vertical boudary.
+        % make sure it is commented during regualt operation of the code!
+%         disp('you know you are inverting the boudary, right?')
+%         tmp_y_pos = trx(1,i).y;
+%         trx(1,i).y = trx(1,i).x;
+%         trx(1,i).x = tmp_y_pos;
+        
         % correcting for the 1mm on edges that centroids are not present
         max_column = max(trx(1,i).y) + (max(trx(1,i).y) - min(trx(1,i).y))/18; 
         min_column = min(trx(1,i).y) - (max(trx(1,i).y) - min(trx(1,i).y))/18; 

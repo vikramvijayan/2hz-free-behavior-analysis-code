@@ -15,7 +15,10 @@ function [eb0, eb2, eb5, eb5f0, eb5f2] = calcbinned(eggs, trx, v)
 [a , ~] =find(eggs.substrate == 5 & eggs.last0 > eggs.last200);
 [a4 , ~] = histcounts((eggs.egg_time(a)-eggs.etrans_time_sub(a,1))./2,v);
 
-[a , ~] =find(eggs.substrate == 5  & eggs.last200 >= eggs.last0);
+%[a , ~] =find(eggs.substrate == 5  & eggs.last200 >= eggs.last0);
+
+% changed on 10/05/2020
+[a , ~] =find(eggs.substrate == 5  & eggs.last200 > eggs.last0);
 [a5 , ~] = histcounts((eggs.egg_time(a)-eggs.etrans_time_sub(a,1))./2,v);
 
 % egg-laying times from last transition and encounters of bin during
@@ -33,8 +36,9 @@ for i = 1:1:eggs.total
     tmp_500 = [tmp_500, trans_dur_500./2];
     tmp_500_0 = [tmp_500_0, trans_dur_500_from0./2];
     tmp_500_200 = [tmp_500_200, trans_dur_500_from200./2];
-    
 end
+
+
 [a1X , ~] = histcounts(tmp_0,v);
 [a2X , ~] = histcounts(tmp_200,v);
 [a3X , ~] = histcounts(tmp_500,v);
@@ -146,6 +150,7 @@ for i = 1:1:eggs.total
             a1Xc2(j) = a1Xc2(j) + 1;
         end
     end
+
     
     if(eggs.explore_start_substrate(i) == 2 && eggs.explore_trans_sub(i) > 0)
         tmp_s = [(min(trans_list)-eggs.estart_trans_time_sub(i,1))./2];

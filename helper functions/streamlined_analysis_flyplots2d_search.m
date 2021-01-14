@@ -2,6 +2,7 @@ function out = streamlined_analysis_flyplots2d_search(eggs, trx, substrate, titl
 
 %% Seperate plots of y-position (over time) with eggs indicated for each fly in dataset
 for i = 1:length(trx)
+%for i = 13
     [a b] = find(eggs.fly == i);
     times = [];
     times(:,1) = transpose(eggs.explore_start_time(a));
