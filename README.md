@@ -1,5 +1,4 @@
 # 2hz-free-behavior-analysis-code
- 2hz-free-behavior-analysis-code
 
 This is basic code to analyze 2hz egg laying tracking. It can obviously be used for tracking at other speeds (may need to change some fixed parameters in the code). 
 
